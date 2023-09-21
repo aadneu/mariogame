@@ -11,8 +11,9 @@ const characters = [
 ];
 
 let areWeBattling = false;
+let victory = false
 let selectedCharacter = null;
-
+let imgsource = '';
 
 
 viewApp();
@@ -27,20 +28,10 @@ function viewApp() {
         `;
   }
 }
-// lage noe mer for victory + kanskje lage fight screen
-function endScreen(){
-    if (characters[0].hp === 0){
-        location.reload()
-    }
-    if (selectedCharacter.hp === 0){
-        location.reload()
-    }
-}
 
 function startPage() {
     return /*html*/ `
     <div id='startscreen'>
-    
     <div id='charselect'>${listCharacters()}</div>
     <br>
     <div id='showselectedchar'></div> 
@@ -52,26 +43,56 @@ function startPage() {
 function battlePage() {
     return /*html*/ `
     <div id='battleground'>
-    <div id='battleimgdiv'><img src="${selectedCharacter.charimg}" alt=""></img></div>
-    <div id='healthbars'><span>${healthBar(characters[0])}</span><span>${healthBar(selectedCharacter)}</span> </div>
-    <div id='buttons'>
-    <span>
-    <button onclick='attackButton(selectedCharacter, randomDmgGenerator())'>Bowser attack</button>
-    <button onclick='eatShrooms(characters[0])'>Eat shrooms</button>
-    </span>
-    <span>
-    <button onclick='attackButton(characters[0], randomDmgGenerator())'>Attack Bowser</button>
-    <button onclick='eatShrooms(selectedCharacter)'>Eat shrooms</button>
-    </span>
+    <div id='battleimgdiv'><img onclick='attackButton(selectedCharacter, randomDmgGenerator())' src="${selectedCharacter.charimg}" alt=""></div>
+    <div id='healthbars'>
+        <span>${healthBar(characters[0])}</span>
+        <span><img onclick='eatShrooms(characters[0])' height='150px' src="${characters[2].charimg}" alt=""> </span>
+        <span>${healthBar(selectedCharacter)}</span>
+        <div><img onclick='eatShrooms(selectedCharacter)' height='150px' src="${characters[1].charimg}" alt=""> </div>
+        
     </div>
-    <div id='bowserbattlediv'><img height='500px' src="${characters[0].charimg}" alt=""></div>
-    <div id='bowserbar'></div>
  
+    <div id='bowserbattlediv'><img onclick='attackButton(characters[0], randomDmgGenerator())' height='500px' src="${characters[0].charimg}" alt=""></div>
+    <div><img id='victory' src="${imgsource}" alt=""></img></div>
     <button onclick='moveToBattle()'>Exit battle</button>
+    <button onclick='winScreen()'>test</button>
     </div>
     `;
 }
 
+function attackButton(character, damage) {
+    if (character.hp > 0) {
+        character.hp = character.hp - damage
+    }
+    if (character.hp <= 0){
+        character.hp = 0
+    }
+    endScreen();
+    viewApp();
+    
+    
+}
+
+function winScreen(imgsrc){
+    imgsource = imgsrc
+   viewApp();     
+}
+
+
+function endScreen(){
+    if (characters[0].hp === 0){
+        winScreen('img/victory-icon-7.png');
+        setTimeout(function(){
+            location.reload();}, 3000)
+        }
+    if (selectedCharacter.hp === 0){
+        winScreen('img/go2big.png');
+        setTimeout(function(){
+            location.reload();}, 3000)
+        }
+        
+    }
+ 
 
 function createBattleHp(){
    let battleHp = selectedCharacter.hp
@@ -91,17 +112,6 @@ function healthBar(char){
 
 
 
-function attackButton(character, damage) {
-    if (character.hp > 0) {
-        character.hp = character.hp - damage
-    }
-    if (character.hp <= 0){
-        character.hp = 0
-    }
-    viewApp();
-    setTimeout(endScreen, 3000);
-}
-
 function randomDmgGenerator(){
     return Math.floor(Math.random() * (50 - 1 + 1)) + 1;
 }
@@ -116,7 +126,6 @@ function moveToBattle() {
   viewApp();
 }
 
-
 function listCharacters() {
   let listchars = "";
   for (let index = 3; index < characters.length; index++) {
@@ -125,11 +134,9 @@ function listCharacters() {
   return listchars;
 }
 
-
 function selectChar(clickedelement) {
   let charactername = clickedelement.getAttribute('alt');
   selectedCharacter = characters.find((obj) => obj.charimg === charactername);
   showselectedchar.innerHTML = `<img src="${selectedCharacter.charimg}" alt=""></img>`
-
 }
 

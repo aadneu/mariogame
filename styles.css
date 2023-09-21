@@ -61,6 +61,13 @@ body{
     gap: 700px;
 
 }
+#victory {
+    position: absolute;
+    bottom: 8%;
+    right: 30%;
+    
+
+}
 /* #buttons {
     position: absolute;
     bottom: 10%;
