@@ -45,9 +45,9 @@ function battlePage() {
     <div id='battleground'>
     <div id='battleimgdiv'><img onclick='attackButton(selectedCharacter, randomDmgGenerator())' src="${selectedCharacter.charimg}" alt=""></div>
     <div id='healthbars'>
-        <span>${healthBar(characters[0])}</span>
-        <span><img onclick='eatShrooms(characters[0])' height='150px' src="${characters[2].charimg}" alt=""> </span>
-        <span>${healthBar(selectedCharacter)}</span>
+        <div style='margin-top: 50px'>${healthBar(characters[0])}</div>
+        <div><img onclick='eatShrooms(characters[0])' height='150px' src="${characters[2].charimg}" alt=""> </div>
+        <div style='margin-top: 50px'>${healthBar(selectedCharacter)}</div>
         <div><img onclick='eatShrooms(selectedCharacter)' height='150px' src="${characters[1].charimg}" alt=""> </div>
         
     </div>
@@ -55,7 +55,7 @@ function battlePage() {
     <div id='bowserbattlediv'><img onclick='attackButton(characters[0], randomDmgGenerator())' height='500px' src="${characters[0].charimg}" alt=""></div>
     <div><img id='victory' src="${imgsource}" alt=""></img></div>
     <button onclick='moveToBattle()'>Exit battle</button>
-    <button onclick='winScreen()'>test</button>
+    
     </div>
     `;
 }

@@ -45,8 +45,9 @@ body{
     right: 58%;
     bottom: 20%;
 }
-#healthbars div {
-    margin-top: 10%;
+#healthbars {
+    display: flex;
+    justify-content: space-around
 }
 #healthbars span{
     display: inline-block;
