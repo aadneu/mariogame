@@ -1,4 +1,9 @@
+//Model
 let app = document.getElementById("app");
+let areWeBattling = false;
+let victory = false
+let selectedCharacter = null;
+let imgsource = '';
 
 const characters = [
     { name: "Bowser", hp: 300, restorehp: 300, charimg: "img/bowser.png"  },
@@ -10,12 +15,7 @@ const characters = [
     { name: "Yoshi", hp: 80, restorehp: 80, charimg: "img/yoshi (1).png" },
 ];
 
-let areWeBattling = false;
-let victory = false
-let selectedCharacter = null;
-let imgsource = '';
-
-
+//View
 viewApp();
 function viewApp() {
     if (areWeBattling) {
@@ -40,44 +40,23 @@ function startPage() {
     </div>
     `;
 }
+
 function battlePage() {
     return /*html*/ `
     <div id='battleground'>
-    <div id='battleimgdiv'><img onclick='attackButton(selectedCharacter, randomDmgGenerator())' src="${selectedCharacter.charimg}" alt=""></div>
+    <div id='battleimgdiv'><img style='cursor: pointer' onclick='attackButton(selectedCharacter, randomDmgGenerator())' src="${selectedCharacter.charimg}" alt=""></div>
     <div id='healthbars'>
         <div style='margin-top: 50px'>${healthBar(characters[0])}</div>
-        <div><img onclick='eatShrooms(characters[0])' height='150px' src="${characters[2].charimg}" alt=""> </div>
+        <div><img style='cursor: pointer' onclick='eatShrooms(characters[0])' height='150px' src="${characters[2].charimg}" alt=""> </div>
         <div style='margin-top: 50px'>${healthBar(selectedCharacter)}</div>
-        <div><img onclick='eatShrooms(selectedCharacter)' height='150px' src="${characters[1].charimg}" alt=""> </div>
-        
+        <div><img style='cursor: pointer' onclick='eatShrooms(selectedCharacter)' height='150px' src="${characters[1].charimg}" alt=""> </div>
     </div>
- 
-    <div id='bowserbattlediv'><img onclick='attackButton(characters[0], randomDmgGenerator())' height='500px' src="${characters[0].charimg}" alt=""></div>
+     <div id='bowserbattlediv'><img style='cursor: pointer' onclick='attackButton(characters[0], randomDmgGenerator())' height='500px' src="${characters[0].charimg}" alt=""></div>
     <div><img id='victory' src="${imgsource}" alt=""></img></div>
     <button onclick='moveToBattle()'>Exit battle</button>
-    
     </div>
     `;
 }
-
-function attackButton(character, damage) {
-    if (character.hp > 0) {
-        character.hp = character.hp - damage
-    }
-    if (character.hp <= 0){
-        character.hp = 0
-    }
-    endScreen();
-    viewApp();
-    
-    
-}
-
-function winScreen(imgsrc){
-    imgsource = imgsrc
-   viewApp();     
-}
-
 
 function endScreen(){
     if (characters[0].hp === 0){
@@ -90,14 +69,29 @@ function endScreen(){
         setTimeout(function(){
             location.reload();}, 3000)
         }
-        
     }
- 
+
+//Controller
+function winScreen(imgsrc){
+    imgsource = imgsrc
+   viewApp();     
+}
+function attackButton(character, damage) {
+    if (character.hp > 0) {
+        character.hp = character.hp - damage
+    }
+    if (character.hp <= 0){
+        character.hp = 0
+    }
+    endScreen();
+    viewApp();  
+}
 
 function createBattleHp(){
    let battleHp = selectedCharacter.hp
    return;
 }
+
 function healthBar(char){
     return /*html*/`
     <div style="
@@ -109,8 +103,6 @@ function healthBar(char){
     </div>
     `;
 }
-
-
 
 function randomDmgGenerator(){
     return Math.floor(Math.random() * (50 - 1 + 1)) + 1;
@@ -129,7 +121,7 @@ function moveToBattle() {
 function listCharacters() {
   let listchars = "";
   for (let index = 3; index < characters.length; index++) {
-    listchars += `<img width='200px' height='250px'   onclick='selectChar(this)' src="${characters[index].charimg}" alt="${characters[index].charimg}">`;
+    listchars += `<img style='cursor: pointer' width='200px' height='250px' onclick='selectChar(this)' src="${characters[index].charimg}" alt="${characters[index].charimg}">`;
   }
   return listchars;
 }
